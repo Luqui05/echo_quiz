@@ -1,5 +1,5 @@
 import 'package:echo_quiz/config/Rotas.dart';
-import 'package:echo_quiz/views/TelaCadastro.dart';
+import 'package:echo_quiz/views/TelaCadastroUsuario.dart';
 import 'package:echo_quiz/views/TelaInicial.dart';
 import 'package:echo_quiz/views/TelaLogin.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       home: const TelaInicial(),
       routes: {
         Rotas.login: (context) => const TelaLogin(),
-        Rotas.cadastro: (context) => const TelaCadastro(),
+        Rotas.cadastro: (context) => const TelaCadastroUsuario(),
       },
     );
   }

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TelaCadastro extends StatefulWidget {
-  const TelaCadastro({super.key});
+class TelaCadastroUsuario extends StatefulWidget {
+  const TelaCadastroUsuario({super.key});
 
   @override
-  State<TelaCadastro> createState() => _TelaCadastroState();
+  State<TelaCadastroUsuario> createState() => _TelaCadastroUsuarioState();
 }
 
-class _TelaCadastroState extends State<TelaCadastro> {
+class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
   final _formKey = GlobalKey<FormState>();
   String nome = '';
   String email = '';
+  String senha = '';
+  bool _obscureSenha = true;
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +74,34 @@ class _TelaCadastroState extends State<TelaCadastro> {
                       ),
                     ),
                     validator: (value) =>
-                      value == null || value.isEmpty ? 'Informe seu e-mail' : null,
+                        value == null || value.isEmpty ? 'Informe seu e-mail' : null,
                     onSaved: (value) => email = value ?? '',
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    obscureText: _obscureSenha,
+                    decoration: InputDecoration(
+                      labelText: 'Senha',
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureSenha ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureSenha = !_obscureSenha;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) =>
+                        value == null || value.length < 6 ? 'Senha deve ter pelo menos 6 caracteres' : null,
+                    onSaved: (value) => senha = value ?? '',
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
