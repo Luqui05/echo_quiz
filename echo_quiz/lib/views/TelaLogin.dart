@@ -1,4 +1,6 @@
 import 'package:echo_quiz/config/Rotas.dart';
+import 'package:echo_quiz/dao/UsuarioDAO.dart';
+import 'package:echo_quiz/models/Usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -58,8 +60,9 @@ class _TelaLoginState extends State<TelaLogin> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    validator: (value) =>
-                        value == null || value.isEmpty ? 'Informe seu e-mail' : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Informe seu e-mail'
+                        : null,
                     onSaved: (value) => email = value ?? '',
                   ),
                   const SizedBox(height: 20),
@@ -74,7 +77,9 @@ class _TelaLoginState extends State<TelaLogin> {
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureSenha ? Icons.visibility_off : Icons.visibility,
+                          _obscureSenha
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Colors.deepPurpleAccent,
                         ),
                         onPressed: () {
@@ -84,16 +89,28 @@ class _TelaLoginState extends State<TelaLogin> {
                         },
                       ),
                     ),
-                    validator: (value) =>
-                        value == null || value.isEmpty ? 'Informe sua senha' : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Informe sua senha'
+                        : null,
                     onSaved: (value) => senha = value ?? '',
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        // TODO: Implementar lógica de autenticação
+                        final usuario = await UsuarioDao()
+                            .consultarPorEmailSenha(email, senha);
+                        if (usuario != null) {
+                          // TODO: Navege pra tela principal ou perfil
+                        } else {
+                          FocusScope.of(context).unfocus();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("E-mail ou senha inválidos"),
+                            ),
+                          );
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

@@ -1,3 +1,5 @@
+import 'package:echo_quiz/dao/UsuarioDAO.dart';
+import 'package:echo_quiz/models/Usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -73,8 +75,9 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    validator: (value) =>
-                        value == null || value.isEmpty ? 'Informe seu e-mail' : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Informe seu e-mail'
+                        : null,
                     onSaved: (value) => email = value ?? '',
                   ),
                   const SizedBox(height: 20),
@@ -89,7 +92,9 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureSenha ? Icons.visibility_off : Icons.visibility,
+                          _obscureSenha
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Colors.deepPurpleAccent,
                         ),
                         onPressed: () {
@@ -99,21 +104,32 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
                         },
                       ),
                     ),
-                    validator: (value) =>
-                        value == null || value.length < 6 ? 'Senha deve ter pelo menos 6 caracteres' : null,
+                    validator: (value) => value == null || value.length < 6
+                        ? 'Senha deve ter pelo menos 6 caracteres'
+                        : null,
                     onSaved: (value) => senha = value ?? '',
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        // TODO: Salvar novo usuário usando o model Usuario
+                        final usuario = Usuario(
+                          nome: nome,
+                          email: email,
+                          senha: senha,
+                          pontuacaoTotal: 0,
+                        );
+                        await UsuarioDao().salvar(usuario);
+                        Navigator.pop(context);
                       }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepPurpleAccent,
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 16,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
