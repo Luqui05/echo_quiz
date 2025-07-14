@@ -1,5 +1,6 @@
 import 'package:echo_quiz/config/Rotas.dart';
 import 'package:echo_quiz/dao/UsuarioDAO.dart';
+import 'package:echo_quiz/models/Sessao.dart';
 import 'package:echo_quiz/models/Usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -102,7 +103,13 @@ class _TelaLoginState extends State<TelaLogin> {
                         final usuario = await UsuarioDao()
                             .consultarPorEmailSenha(email, senha);
                         if (usuario != null) {
-                          // TODO: Navege pra tela principal ou perfil
+                          Sessao.usuarioLogado = true;
+                          Sessao.usuario = usuario;
+                          Navigator.pushReplacementNamed(
+                            context,
+                            Rotas.perfil,
+                            arguments: usuario,
+                          );
                         } else {
                           FocusScope.of(context).unfocus();
                           ScaffoldMessenger.of(context).showSnackBar(

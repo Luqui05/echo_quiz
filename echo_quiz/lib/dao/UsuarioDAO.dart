@@ -3,7 +3,7 @@ import 'package:echo_quiz/models/Usuario.dart';
 
 class UsuarioDao {
   static get inserirUsuario => [
-    "INSERT INTO usuario (nome, email, senha, pontuacaoTotal) VALUES ('Usuário Teste', 'teste@echoquiz.com', '123456', 0);",
+    "INSERT INTO usuario (nome, email, senha, pontuacaoTotal) VALUES ('Lucas Ribeiro', 'lucas@email.com', '123456', 1549);",
   ];
 
   final String sqlInsert =

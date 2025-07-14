@@ -1,10 +1,16 @@
 import 'package:echo_quiz/config/Rotas.dart';
+import 'package:echo_quiz/models/Sessao.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TelaInicial extends StatelessWidget {
+class TelaInicial extends StatefulWidget {
   const TelaInicial({Key? key}) : super(key: key);
 
+  @override
+  State<StatefulWidget> createState() => _TelaInicialState();
+}
+
+class _TelaInicialState extends State<TelaInicial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +46,17 @@ class TelaInicial extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, Rotas.login);
+              onPressed: () async {
+                if (Sessao.usuarioLogado && Sessao.usuario != null) {
+                  await Navigator.pushNamed(
+                    context,
+                    Rotas.perfil,
+                    arguments: Sessao.usuario,
+                  );
+                } else {
+                  await Navigator.pushNamed(context, Rotas.login);
+                }
+                setState(() {});
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
@@ -54,8 +69,8 @@ class TelaInicial extends StatelessWidget {
                 ),
                 elevation: 5,
               ),
-              child: const Text(
-                'Entre com seu perfil',
+              child: Text(
+                Sessao.usuarioLogado ? 'Perfil' : 'Entre com seu perfil',
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
