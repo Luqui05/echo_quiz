@@ -1,5 +1,6 @@
 import 'package:echo_quiz/models/Usuario.dart';
 import 'package:flutter/material.dart';
+import 'package:echo_quiz/models/Sessao.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TelaPerfilUsuario extends StatelessWidget {
@@ -67,6 +68,26 @@ class TelaPerfilUsuario extends StatelessWidget {
                     ),
                     child: const Text(
                       'Voltar',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      Sessao.usuarioLogado = false;
+                      Sessao.usuario = null;
+                      Navigator.of(
+                        context,
+                      ).pushNamedAndRemoveUntil('/', (route) => false);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      'Sair',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
