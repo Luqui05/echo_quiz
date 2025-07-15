@@ -16,12 +16,19 @@ class Conexao {
       pontuacaoTotal INTEGER NOT NULL DEFAULT 0
     );
   """,
-  """
+    """
     CREATE TABLE IF NOT EXISTS pergunta (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       texto TEXT NOT NULL,
       alternativas TEXT NOT NULL,
       indiceAlternativaCorreta INTEGER NOT NULL
+    );
+  """,
+    """
+    CREATE TABLE IF NOT EXISTS quiz (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      titulo TEXT NOT NULL,
+      perguntasIds TEXT NOT NULL
     );
   """,
   ];
