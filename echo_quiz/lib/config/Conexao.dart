@@ -16,6 +16,14 @@ class Conexao {
       pontuacaoTotal INTEGER NOT NULL DEFAULT 0
     );
   """,
+  """
+    CREATE TABLE IF NOT EXISTS pergunta (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      texto TEXT NOT NULL,
+      alternativas TEXT NOT NULL,
+      indiceAlternativaCorreta INTEGER NOT NULL
+    );
+  """,
   ];
 
   static Future<Database> get() async {
