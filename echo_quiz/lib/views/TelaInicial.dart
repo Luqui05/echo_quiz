@@ -76,6 +76,27 @@ class _TelaInicialState extends State<TelaInicial> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Rotas.cadastroQuiz);
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+                backgroundColor: Colors.deepPurpleAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                elevation: 5,
+              ),
+              child: const Text(
+                'Cadastrar Quiz',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(

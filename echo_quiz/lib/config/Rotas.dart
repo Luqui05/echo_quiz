@@ -3,4 +3,5 @@ class Rotas {
   static String cadastro = '/cadastro';
   static String perfil = '/perfil';
   static String cadastroPergunta = '/cadastroPergunta';
+  static String cadastroQuiz = '/cadastroQuiz';
 }
