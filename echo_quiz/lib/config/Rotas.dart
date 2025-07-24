@@ -9,4 +9,5 @@ class Rotas {
   static const String quiz = '/quiz';
   static const String resultadoQuiz = '/resultadoQuiz';
   static const String historico = '/historico';
+  static const String dashboard = '/dashboard';
 }

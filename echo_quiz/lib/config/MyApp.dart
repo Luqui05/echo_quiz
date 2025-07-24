@@ -4,6 +4,7 @@ import 'package:echo_quiz/models/Usuario.dart';
 import 'package:echo_quiz/views/TelaCadastroPergunta.dart';
 import 'package:echo_quiz/views/TelaCadastroQuiz.dart';
 import 'package:echo_quiz/views/TelaCadastroUsuario.dart';
+import 'package:echo_quiz/views/TelaDashboard.dart';
 import 'package:echo_quiz/views/TelaHistorico.dart';
 import 'package:echo_quiz/views/TelaInicial.dart';
 import 'package:echo_quiz/views/TelaLogin.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         },
         Rotas.resultadoQuiz: (context) => const TelaResultadoQuiz(),
         Rotas.historico: (context) => const TelaHistorico(),
+        Rotas.dashboard: (context) => const TelaDashboard(),
       },
     );
   }

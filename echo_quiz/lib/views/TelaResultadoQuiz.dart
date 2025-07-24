@@ -1,5 +1,5 @@
 import 'package:echo_quiz/components/ComponenteCard.dart';
-import 'package:echo_quiz/components/ComponenteEstat%C3%ADstica.dart';
+import 'package:echo_quiz/components/ComponenteEstatistica.dart';
 import 'package:echo_quiz/config/Rotas.dart';
 import 'package:echo_quiz/dao/HistoricoJogoDAO.dart';
 import 'package:echo_quiz/models/HistoricoJogo.dart';
