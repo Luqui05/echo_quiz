@@ -1,3 +1,5 @@
+import 'package:echo_quiz/components/ComponenteCard.dart';
+import 'package:echo_quiz/components/ComponenteEstat%C3%ADstica.dart';
 import 'package:echo_quiz/config/Rotas.dart';
 import 'package:echo_quiz/dao/HistoricoJogoDAO.dart';
 import 'package:echo_quiz/models/HistoricoJogo.dart';
@@ -199,40 +201,35 @@ class _TelaResultadoQuizState extends State<TelaResultadoQuiz> {
   }
 
   Widget _buildEstatisticas(int total, int acertos, int erros, int percentual) {
-    return Card(
-      color: Colors.white.withOpacity(0.9),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildEstatisticaItem(
-              'Total',
-              total.toString(),
-              Icons.quiz,
-              Colors.blue,
-            ),
-            _buildEstatisticaItem(
-              'Acertos',
-              acertos.toString(),
-              Icons.check_circle,
-              Colors.green,
-            ),
-            _buildEstatisticaItem(
-              'Erros',
-              erros.toString(),
-              Icons.cancel,
-              Colors.red,
-            ),
-            _buildEstatisticaItem(
-              'Acerto',
-              '$percentual%',
-              Icons.percent,
-              Colors.amber,
-            ),
-          ],
-        ),
+    return ComponenteCard(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ComponenteEstatistica(
+            rotulo: 'Total',
+            valor: total.toString(),
+            icone: Icons.quiz,
+            cor: Colors.blue,
+          ),
+          ComponenteEstatistica(
+            rotulo: 'Acertos',
+            valor: acertos.toString(),
+            icone: Icons.check_circle,
+            cor: Colors.green,
+          ),
+          ComponenteEstatistica(
+            rotulo: 'Erros',
+            valor: erros.toString(),
+            icone: Icons.cancel,
+            cor: Colors.red,
+          ),
+          ComponenteEstatistica(
+            rotulo: 'Acerto',
+            valor: '$percentual%',
+            icone: Icons.percent,
+            cor: Colors.amber,
+          ),
+        ],
       ),
     );
   }

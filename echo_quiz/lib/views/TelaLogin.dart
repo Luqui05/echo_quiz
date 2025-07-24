@@ -2,6 +2,10 @@ import 'package:echo_quiz/config/Rotas.dart';
 import 'package:echo_quiz/dao/UsuarioDAO.dart';
 import 'package:echo_quiz/models/Sessao.dart';
 import 'package:echo_quiz/models/Usuario.dart';
+import 'package:echo_quiz/components/ComponenteAppBar.dart';
+import 'package:echo_quiz/components/ComponenteBotao.dart';
+import 'package:echo_quiz/components/ComponenteCampoTexto.dart';
+import 'package:echo_quiz/components/ComponenteLayoutGradiente.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,24 +21,13 @@ class _TelaLoginState extends State<TelaLogin> {
   String email = '';
   String senha = '';
   bool _obscureSenha = true;
+  bool _carregando = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-        backgroundColor: Colors.deepPurpleAccent,
-      ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0XFF8E2DE2), Color(0xFF4A00E0)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+      appBar: const ComponenteAppBar(titulo: 'Login'),
+      body: ComponenteLayoutGradiente(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Center(
           child: SingleChildScrollView(
@@ -52,94 +45,40 @@ class _TelaLoginState extends State<TelaLogin> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'E-mail',
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.9),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    validator: (value) => value == null || value.isEmpty
+                  ComponenteCampoTexto(
+                    rotulo: 'E-mail',
+                    tipoTeclado: TextInputType.emailAddress,
+                    validador: (value) => value == null || value.isEmpty
                         ? 'Informe seu e-mail'
                         : null,
-                    onSaved: (value) => email = value ?? '',
+                    aoSalvar: (value) => email = value ?? '',
                   ),
                   const SizedBox(height: 20),
-                  TextFormField(
+                  ComponenteCampoTexto(
+                    rotulo: 'Senha',
                     obscureText: _obscureSenha,
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.9),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureSenha ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.deepPurpleAccent,
                       ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureSenha
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Colors.deepPurpleAccent,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureSenha = !_obscureSenha;
-                          });
-                        },
-                      ),
+                      onPressed: () => setState(() => _obscureSenha = !_obscureSenha),
                     ),
-                    validator: (value) => value == null || value.isEmpty
+                    validador: (value) => value == null || value.isEmpty
                         ? 'Informe sua senha'
                         : null,
-                    onSaved: (value) => senha = value ?? '',
+                    aoSalvar: (value) => senha = value ?? '',
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        final usuario = await UsuarioDao()
-                            .consultarPorEmailSenha(email, senha);
-                        if (usuario != null) {
-                          Sessao.usuarioLogado = true;
-                          Sessao.usuario = usuario;
-                          Navigator.pushReplacementNamed(
-                            context,
-                            Rotas.perfil,
-                            arguments: usuario,
-                          );
-                        } else {
-                          FocusScope.of(context).unfocus();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("E-mail ou senha inválidos"),
-                            ),
-                          );
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurpleAccent,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 16,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: const Text(
-                      'Entrar',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
+                  ComponenteBotao(
+                    texto: 'Entrar',
+                    carregando: _carregando,
+                    largura: double.infinity,
+                    onPressed: _fazerLogin,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Rotas.cadastro);
-                    },
+                    onPressed: () => Navigator.pushNamed(context, Rotas.cadastro),
                     child: const Text(
                       'Não tem conta? Crie sua conta',
                       style: TextStyle(color: Colors.white70),
@@ -152,5 +91,27 @@ class _TelaLoginState extends State<TelaLogin> {
         ),
       ),
     );
+  }
+
+  Future<void> _fazerLogin() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _carregando = true);
+      _formKey.currentState!.save();
+      
+      try {
+        final usuario = await UsuarioDao().consultarPorEmailSenha(email, senha);
+        if (usuario != null) {
+          Sessao.usuarioLogado = true;
+          Sessao.usuario = usuario;
+          Navigator.pushReplacementNamed(context, Rotas.perfil, arguments: usuario);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("E-mail ou senha inválidos")),
+          );
+        }
+      } finally {
+        setState(() => _carregando = false);
+      }
+    }
   }
 }
