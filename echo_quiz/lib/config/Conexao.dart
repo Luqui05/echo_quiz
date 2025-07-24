@@ -32,6 +32,20 @@ class Conexao {
       perguntasIds TEXT NOT NULL
     );
   """,
+    """
+    CREATE TABLE IF NOT EXISTS historicoJogo (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      idUsuario INTEGER NOT NULL,
+      idQuiz INTEGER NOT NULL,
+      dataJogo TEXT NOT NULL,
+      perguntasRespondidas INTEGER NOT NULL,
+      acertos INTEGER NOT NULL,
+      erros INTEGER NOT NULL,
+      pontosObtidos INTEGER NOT NULL,
+      FOREIGN KEY (idUsuario) REFERENCES usuario (id),
+      FOREIGN KEY (idQuiz) REFERENCES quiz (id)
+    );
+  """,
   ];
 
   static Future<Database> get() async {
