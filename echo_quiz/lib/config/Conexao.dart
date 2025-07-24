@@ -28,8 +28,16 @@ class Conexao {
     """
     CREATE TABLE IF NOT EXISTS quiz (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      titulo TEXT NOT NULL,
-      perguntasIds TEXT NOT NULL
+      titulo TEXT NOT NULL
+    );
+  """,
+    """
+    CREATE TABLE IF NOT EXISTS quiz_pergunta (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      idQuiz INTEGER NOT NULL,
+      idPergunta INTEGER NOT NULL,
+      FOREIGN KEY (idQuiz) REFERENCES quiz (id),
+      FOREIGN KEY (idPergunta) REFERENCES pergunta (id)
     );
   """,
     """

@@ -119,6 +119,7 @@ class _TelaCadastroPerguntaState extends State<TelaCadastroPergunta> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               final pergunta = Pergunta(
+                                id: null,
                                 texto: _perguntaController.text,
                                 alternativas: _alternativasControllers
                                     .map((c) => Alternativa(texto: c.text))

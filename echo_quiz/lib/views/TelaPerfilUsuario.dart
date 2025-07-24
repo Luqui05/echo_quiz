@@ -1,3 +1,4 @@
+import 'package:echo_quiz/config/Rotas.dart';
 import 'package:echo_quiz/models/Usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:echo_quiz/models/Sessao.dart';
@@ -56,6 +57,22 @@ class TelaPerfilUsuario extends StatelessWidget {
                     style: GoogleFonts.poppins(fontSize: 18),
                   ),
                   const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Rotas.historico);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      'Ver Histórico',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);

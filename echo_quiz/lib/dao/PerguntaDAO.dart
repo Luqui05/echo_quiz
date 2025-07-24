@@ -21,11 +21,12 @@ class PerguntaDAO {
   Future<int> salvar(Pergunta pergunta) async {
     final db = await Conexao.get();
     final alternativaStr = pergunta.alternativas.map((a) => a.texto).join(';');
-    return await db.rawInsert(sqlInsert, [
+    final id = await db.rawInsert(sqlInsert, [
       pergunta.texto,
       alternativaStr,
       pergunta.indiceAlternativaCorreta,
     ]);
+    return id;
   }
 
   Future<List<Pergunta>> consultarTodos() async {
@@ -45,9 +46,14 @@ class PerguntaDAO {
         .map((t) => Alternativa(texto: t))
         .toList();
     return Pergunta(
+      id: map['id'],
       texto: map['texto'],
       alternativas: alternativas,
       indiceAlternativaCorreta: map['indiceAlternativaCorreta'],
     );
+  }
+
+  Pergunta fromMapPublic(Map<String, dynamic> map) {
+    return _fromMap(map);
   }
 }
