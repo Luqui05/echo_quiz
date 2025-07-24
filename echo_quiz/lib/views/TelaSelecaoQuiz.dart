@@ -196,13 +196,20 @@ class _TelaSelecaoQuizState extends State<TelaSelecaoQuiz> {
                     size: 32,
                   ),
                   onTap: () {
-                    // TODO: Navegar para a tela do quiz
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Iniciando quiz "${quiz.titulo}"!'),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
+                    if (quiz.perguntas.isNotEmpty) {
+                      Navigator.pushNamed(
+                        context,
+                        Rotas.quiz,
+                        arguments: quiz,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Este quiz não possui perguntas!'),
+                          backgroundColor: Colors.orange,
+                        ),
+                      );
+                    }
                   },
                 ),
               );

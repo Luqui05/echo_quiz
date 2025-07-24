@@ -1,4 +1,5 @@
 import 'package:echo_quiz/config/Rotas.dart';
+import 'package:echo_quiz/models/Quiz.dart';
 import 'package:echo_quiz/models/Usuario.dart';
 import 'package:echo_quiz/views/TelaCadastroPergunta.dart';
 import 'package:echo_quiz/views/TelaCadastroQuiz.dart';
@@ -6,6 +7,8 @@ import 'package:echo_quiz/views/TelaCadastroUsuario.dart';
 import 'package:echo_quiz/views/TelaInicial.dart';
 import 'package:echo_quiz/views/TelaLogin.dart';
 import 'package:echo_quiz/views/TelaPerfilUsuario.dart';
+import 'package:echo_quiz/views/TelaQuiz.dart';
+import 'package:echo_quiz/views/TelaResultadoQuiz.dart';
 import 'package:echo_quiz/views/TelaSelecaoQuiz.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +34,11 @@ class MyApp extends StatelessWidget {
         Rotas.cadastroPergunta: (context) => const TelaCadastroPergunta(),
         Rotas.cadastroQuiz: (context) => const TelaCadastroQuiz(),
         Rotas.selecaoQuiz: (context) => const TelaSelecaoQuiz(),
+        Rotas.quiz: (context) {
+          final quiz = ModalRoute.of(context)!.settings.arguments as Quiz;
+          return TelaQuiz(quiz: quiz);
+        },
+        Rotas.resultadoQuiz: (context) => const TelaResultadoQuiz(),
       },
     );
   }

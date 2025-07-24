@@ -65,6 +65,7 @@ class UsuarioDao {
 
   Usuario _fromMap(Map<String, dynamic> map) {
     return Usuario(
+      id: map['id'],
       nome: map['nome'],
       email: map['email'],
       senha: map['senha'],

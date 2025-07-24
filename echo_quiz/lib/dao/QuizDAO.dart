@@ -21,6 +21,7 @@ class QuizDAO {
 
   Quiz _fromMap(Map<String, dynamic> map) {
     return Quiz(
+      id: map['id'],
       titulo: map['titulo'],
       perguntas: [], // Implementar busca das perguntas por IDs
     );
