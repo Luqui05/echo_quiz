@@ -1,3 +1,4 @@
+import 'package:echo_quiz/config/Rotas.dart';
 import 'package:echo_quiz/dao/PerguntaDAO.dart';
 import 'package:echo_quiz/dao/QuizDAO.dart';
 import 'package:echo_quiz/models/Quiz.dart';
@@ -106,7 +107,9 @@ class _TelaCadastroQuizState extends State<TelaCadastroQuiz> {
                           itemCount: _perguntasDisponiveis.length,
                           itemBuilder: (context, index) {
                             final pergunta = _perguntasDisponiveis[index];
-                            final isSelected = _perguntasSelecionadas.contains(pergunta);
+                            final isSelected = _perguntasSelecionadas.contains(
+                              pergunta,
+                            );
                             return CheckboxListTile(
                               title: Text(
                                 pergunta.texto,
@@ -138,7 +141,9 @@ class _TelaCadastroQuizState extends State<TelaCadastroQuiz> {
                               if (_perguntasSelecionadas.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Selecione pelo menos uma pergunta'),
+                                    content: Text(
+                                      'Selecione pelo menos uma pergunta',
+                                    ),
                                   ),
                                 );
                                 return;
@@ -147,8 +152,13 @@ class _TelaCadastroQuizState extends State<TelaCadastroQuiz> {
                                 titulo: _tituloController.text,
                                 perguntas: _perguntasSelecionadas,
                               );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Quiz salvo com sucesso!'),
+                                ),
+                              );
                               await QuizDAO().salvar(quiz);
-                              Navigator.pop(context);
+                              Navigator.pushNamed(context, Rotas.home);
                             }
                           },
                           style: ElevatedButton.styleFrom(

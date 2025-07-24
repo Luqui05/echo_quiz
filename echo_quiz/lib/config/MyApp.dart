@@ -6,6 +6,7 @@ import 'package:echo_quiz/views/TelaCadastroUsuario.dart';
 import 'package:echo_quiz/views/TelaInicial.dart';
 import 'package:echo_quiz/views/TelaLogin.dart';
 import 'package:echo_quiz/views/TelaPerfilUsuario.dart';
+import 'package:echo_quiz/views/TelaSelecaoQuiz.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const TelaInicial(),
       routes: {
+        Rotas.home: (context) => const TelaInicial(),
         Rotas.login: (context) => const TelaLogin(),
         Rotas.cadastro: (context) => const TelaCadastroUsuario(),
         Rotas.perfil: (context) {
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         },
         Rotas.cadastroPergunta: (context) => const TelaCadastroPergunta(),
         Rotas.cadastroQuiz: (context) => const TelaCadastroQuiz(),
+        Rotas.selecaoQuiz: (context) => const TelaSelecaoQuiz(),
       },
     );
   }

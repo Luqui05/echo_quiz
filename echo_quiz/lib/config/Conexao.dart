@@ -1,3 +1,4 @@
+import 'package:echo_quiz/dao/PerguntaDAO.dart';
 import 'package:echo_quiz/dao/UsuarioDAO.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -49,6 +50,9 @@ class Conexao {
             await db.execute(sql);
           }
           for (var sql in UsuarioDao.inserirUsuario) {
+            await db.execute(sql);
+          }
+          for (var sql in PerguntaDAO.inserirPerguntas) {
             await db.execute(sql);
           }
         },

@@ -6,8 +6,8 @@
 | Data         | Entrega                                                                 | Descrição |
 |--------------|-------------------------------------------------------------------------|---------------------|
 | **05/06**    | [x] Catálogo de Entidades                          | Catalogo           |
-| **05/06**    | [] Formulários simples                          | Formulários simples           |
-| **12/06**    | [] 1 CRUD simples                      | CRUD simples           |
+| **05/06**    | [x] Formulários simples                          | Formulários simples           |
+| **12/06**    | [x] 1 CRUD simples                      | CRUD simples           |
 | **19/06**    | [] 3 ou mais CRUD simples                      | todos CRUD simples           |
 | **26/06**    | [] 1 CRUD com associação                   | todos CRUD associação           |
 | **26/07**    | [] 3 CRUD com associação                   | todos CRUD associação           |
