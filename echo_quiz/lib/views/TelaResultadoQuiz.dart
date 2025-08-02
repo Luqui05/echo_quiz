@@ -1,7 +1,9 @@
 import 'package:echo_quiz/components/ComponenteCard.dart';
 import 'package:echo_quiz/components/ComponenteEstatistica.dart';
 import 'package:echo_quiz/config/Rotas.dart';
+import 'package:echo_quiz/config/SincronizacaoService.dart';
 import 'package:echo_quiz/dao/HistoricoJogoDAO.dart';
+import 'package:echo_quiz/dao/UsuarioDAO.dart';
 import 'package:echo_quiz/models/HistoricoJogo.dart';
 import 'package:echo_quiz/models/Quiz.dart';
 import 'package:echo_quiz/models/Sessao.dart';
@@ -51,7 +53,16 @@ class _TelaResultadoQuizState extends State<TelaResultadoQuiz> {
           pontosObtidos: pontuacao,
         );
         
+        // Salvar localmente
         await HistoricoJogoDAO().inserir(historico);
+        
+        // Atualizar pontuação do usuário
+        Sessao.usuario!.pontuacaoTotal += pontuacao;
+        await UsuarioDao().salvar(Sessao.usuario!, id: Sessao.usuario!.id);
+        
+        // Sincronizar com Firebase
+        await SincronizacaoService.sincronizarHistorico(historico);
+        await SincronizacaoService.sincronizarUsuario(Sessao.usuario!);
       }
     } catch (e) {
       debugPrint('Erro ao salvar histórico: $e');

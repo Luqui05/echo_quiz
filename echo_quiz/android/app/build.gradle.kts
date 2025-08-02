@@ -42,3 +42,10 @@ android {
 flutter {
     source = "../.."
 }
+
+apply plugin: 'com.google.gms.google-services' // Adicione esta linha
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.2.2')
+    // ...existing dependencies...
+}

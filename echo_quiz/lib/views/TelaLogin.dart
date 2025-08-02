@@ -1,4 +1,5 @@
 import 'package:echo_quiz/config/Rotas.dart';
+import 'package:echo_quiz/config/SincronizacaoService.dart';
 import 'package:echo_quiz/dao/UsuarioDAO.dart';
 import 'package:echo_quiz/models/Sessao.dart';
 import 'package:echo_quiz/models/Usuario.dart';
@@ -103,6 +104,10 @@ class _TelaLoginState extends State<TelaLogin> {
         if (usuario != null) {
           Sessao.usuarioLogado = true;
           Sessao.usuario = usuario;
+          
+          // Sincronização após login
+          await SincronizacaoService.sincronizacaoCompleta();
+          
           Navigator.pushReplacementNamed(context, Rotas.perfil, arguments: usuario);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

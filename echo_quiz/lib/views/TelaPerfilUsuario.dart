@@ -1,13 +1,19 @@
 import 'package:echo_quiz/config/Rotas.dart';
+import 'package:echo_quiz/config/SincronizacaoService.dart';
 import 'package:echo_quiz/models/Usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:echo_quiz/models/Sessao.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TelaPerfilUsuario extends StatelessWidget {
+class TelaPerfilUsuario extends StatefulWidget {
   final Usuario usuario;
   const TelaPerfilUsuario({super.key, required this.usuario});
 
+  @override
+  State<TelaPerfilUsuario> createState() => _TelaPerfilUsuarioState();
+}
+
+class _TelaPerfilUsuarioState extends State<TelaPerfilUsuario> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,17 +49,17 @@ class TelaPerfilUsuario extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    usuario.nome,
+                    widget.usuario.nome,
                     style: GoogleFonts.poppins(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(usuario.email, style: GoogleFonts.poppins(fontSize: 16)),
+                  Text(widget.usuario.email, style: GoogleFonts.poppins(fontSize: 16)),
                   const SizedBox(height: 16),
                   Text(
-                    'Pontuação: ${usuario.pontuacaoTotal}',
+                    'Pontuação: ${widget.usuario.pontuacaoTotal}',
                     style: GoogleFonts.poppins(fontSize: 18),
                   ),
                   const SizedBox(height: 24),
@@ -122,6 +128,28 @@ class TelaPerfilUsuario extends StatelessWidget {
                     child: const Text(
                       'Sair',
                       style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Sincronizando dados...')),
+                      );
+
+                      await SincronizacaoService.sincronizacaoCompleta();
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Sincronização concluída!')),
+                      );
+
+                      setState(() {}); // Agora funciona!
+                    },
+                    icon: const Icon(Icons.sync, color: Colors.white),
+                    label: const Text('Sincronizar Dados'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
                     ),
                   ),
                 ],

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "166528374954",
+    "project_id": "echo-quiz-edef4",
+    "storage_bucket": "echo-quiz-edef4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166528374954:android:ae0c153191fb6b836a98d3",
+        "android_client_info": {
+          "package_name": "com.example.echo_quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRx05Fyfu4uxoSMLIaEc6AiVOc8OyKzYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
