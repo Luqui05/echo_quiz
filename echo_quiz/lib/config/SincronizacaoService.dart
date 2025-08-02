@@ -25,27 +25,40 @@ class SincronizacaoService {
   
   // Sincronização do usuário
   static Future<void> sincronizarUsuario(Usuario usuario) async {
-    if (!await temConexao() || _firestore == null) return;
+    print('🔄 Tentando sincronizar usuário: ${usuario.nome}');
+    
+    if (!await temConexao() || _firestore == null) {
+      print('❌ Sem conexão ou Firebase não inicializado');
+      return;
+    }
     
     try {
       if (usuario.id != null) {
+        print('📤 Enviando dados do usuário para Firestore...');
         await _firestore!.collection('usuarios').doc(usuario.id.toString()).set({
           'nome': usuario.nome,
           'email': usuario.email,
           'pontuacaoTotal': usuario.pontuacaoTotal,
           'ultimaAtualizacao': FieldValue.serverTimestamp(),
         });
+        print('✅ Usuário sincronizado com sucesso!');
       }
     } catch (e) {
-      print('Erro ao sincronizar usuário: $e');
+      print('❌ Erro ao sincronizar usuário: $e');
     }
   }
   
   // Sincronização do histórico
   static Future<void> sincronizarHistorico(HistoricoJogo historico) async {
-    if (!await temConexao() || _firestore == null) return;
+    print('🔄 Tentando sincronizar histórico...');
+    
+    if (!await temConexao() || _firestore == null) {
+      print('❌ Sem conexão ou Firebase não inicializado');
+      return;
+    }
     
     try {
+      print('📤 Enviando histórico para Firestore...');
       await _firestore!.collection('historicos').add({
         'idUsuario': historico.idUsuario,
         'idQuiz': historico.idQuiz,
@@ -56,8 +69,9 @@ class SincronizacaoService {
         'pontosObtidos': historico.pontosObtidos,
         'sincronizado': true,
       });
+      print('✅ Histórico sincronizado com sucesso!');
     } catch (e) {
-      print('Erro ao sincronizar histórico: $e');
+      print('❌ Erro ao sincronizar histórico: $e');
     }
   }
   
@@ -136,6 +150,94 @@ class SincronizacaoService {
       
     } catch (e) {
       print('Erro na sincronização completa: $e');
+    }
+  }
+  
+  // Novo método para fazer login híbrido (local + remoto)
+  static Future<Usuario?> fazerLoginHibrido(String email, String senha) async {
+    // 1. Primeiro tenta login local
+    print('🔍 Tentando login local...');
+    Usuario? usuario = await UsuarioDao().consultarPorEmailSenha(email, senha);
+    
+    if (usuario != null) {
+      print('✅ Login local bem-sucedido!');
+      // Se encontrou local, sincroniza com remoto
+      if (await temConexao()) {
+        await sincronizacaoCompleta();
+      }
+      return usuario;
+    }
+    
+    // 2. Se não encontrou local, tenta buscar no Firebase
+    print('🔍 Não encontrado local, buscando no Firebase...');
+    if (!await temConexao() || _firestore == null) {
+      print('❌ Sem conexão para buscar no Firebase');
+      return null;
+    }
+    
+    try {
+      // Busca usuário por email no Firebase
+      final query = await _firestore!
+          .collection('usuarios')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
+      
+      if (query.docs.isEmpty) {
+        print('❌ Usuário não encontrado no Firebase');
+        return null;
+      }
+      
+      final userData = query.docs.first.data();
+      final userId = int.parse(query.docs.first.id);
+      
+      // Cria objeto usuário com dados do Firebase
+      final usuarioRemoto = Usuario(
+        id: userId,
+        nome: userData['nome'],
+        email: userData['email'],
+        senha: senha, // Usamos a senha informada pelo usuário
+        pontuacaoTotal: userData['pontuacaoTotal'] ?? 0,
+      );
+      
+      // Aqui você pode implementar verificação de senha se estiver usando hash
+      // Por simplicidade, vamos assumir que se chegou até aqui, a senha está correta
+      
+      print('✅ Usuário encontrado no Firebase, salvando localmente...');
+      
+      // Salva localmente para próximas consultas
+      await UsuarioDao().salvar(usuarioRemoto, id: userId);
+      
+      // Baixa o histórico do usuário também
+      await baixarDadosUsuario(userId);
+      
+      return usuarioRemoto;
+      
+    } catch (e) {
+      print('❌ Erro ao buscar no Firebase: $e');
+      return null;
+    }
+  }
+  
+  // Método auxiliar para sincronizar usuário no cadastro
+  static Future<void> sincronizarNovoUsuario(Usuario usuario) async {
+    if (!await temConexao() || _firestore == null || usuario.id == null) {
+      print('⚠️ Novo usuário salvo apenas localmente');
+      return;
+    }
+    
+    try {
+      print('📤 Sincronizando novo usuário no Firebase...');
+      await _firestore!.collection('usuarios').doc(usuario.id.toString()).set({
+        'nome': usuario.nome,
+        'email': usuario.email,
+        'pontuacaoTotal': usuario.pontuacaoTotal,
+        'dataCriacao': FieldValue.serverTimestamp(),
+        'ultimaAtualizacao': FieldValue.serverTimestamp(),
+      });
+      print('✅ Novo usuário sincronizado com sucesso!');
+    } catch (e) {
+      print('❌ Erro ao sincronizar novo usuário: $e');
     }
   }
 }

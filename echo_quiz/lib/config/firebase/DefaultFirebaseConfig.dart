@@ -32,37 +32,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDemo-key-for-development-only',
-    appId: '1:123456789:web:abcdef123456',
-    messagingSenderId: '123456789',
-    projectId: 'echo-quiz-demo',
-    authDomain: 'echo-quiz-demo.firebaseapp.com',
-    storageBucket: 'echo-quiz-demo.appspot.com',
+    apiKey: "AIzaSyAXaTW6d-n_fZY6xPWSnHsYNTCgvu4btVc",
+    authDomain: "echo-quiz-edef4.firebaseapp.com",
+    projectId: "echo-quiz-edef4",
+    storageBucket: "echo-quiz-edef4.firebasestorage.app",
+    messagingSenderId: "166528374954",
+    appId: "1:166528374954:web:82bb9158bd8509cf6a98d3",
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDemo-key-for-development-only',
-    appId: '1:123456789:android:abcdef123456',
-    messagingSenderId: '123456789',
-    projectId: 'echo-quiz-demo',
-    storageBucket: 'echo-quiz-demo.appspot.com',
+    apiKey: "AIzaSyAXaTW6d-n_fZY6xPWSnHsYNTCgvu4btVc",
+    authDomain: "echo-quiz-edef4.firebaseapp.com",
+    projectId: "echo-quiz-edef4",
+    storageBucket: "echo-quiz-edef4.firebasestorage.app",
+    messagingSenderId: "166528374954",
+    appId: "1:166528374954:web:82bb9158bd8509cf6a98d3",
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDemo-key-for-development-only',
-    appId: '1:123456789:ios:abcdef123456',
-    messagingSenderId: '123456789',
-    projectId: 'echo-quiz-demo',
-    storageBucket: 'echo-quiz-demo.appspot.com',
-    iosBundleId: 'com.example.echoQuiz',
+    apiKey: "AIzaSyAXaTW6d-n_fZY6xPWSnHsYNTCgvu4btVc",
+    authDomain: "echo-quiz-edef4.firebaseapp.com",
+    projectId: "echo-quiz-edef4",
+    storageBucket: "echo-quiz-edef4.firebasestorage.app",
+    messagingSenderId: "166528374954",
+    appId: "1:166528374954:web:82bb9158bd8509cf6a98d3",
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDemo-key-for-development-only',
-    appId: '1:123456789:ios:abcdef123456',
-    messagingSenderId: '123456789',
-    projectId: 'echo-quiz-demo',
-    storageBucket: 'echo-quiz-demo.appspot.com',
-    iosBundleId: 'com.example.echoQuiz',
+    apiKey: "AIzaSyAXaTW6d-n_fZY6xPWSnHsYNTCgvu4btVc",
+    authDomain: "echo-quiz-edef4.firebaseapp.com",
+    projectId: "echo-quiz-edef4",
+    storageBucket: "echo-quiz-edef4.firebasestorage.app",
+    messagingSenderId: "166528374954",
+    appId: "1:166528374954:web:82bb9158bd8509cf6a98d3",
   );
 }
