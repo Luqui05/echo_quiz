@@ -87,19 +87,28 @@ class _TelaQuizState extends State<TelaQuiz> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              _buildProgresso(),
-              const SizedBox(height: 24),
-              _buildPergunta(),
-              const SizedBox(height: 24),
-              _buildAlternativas(),
-              const Spacer(),
-              _buildBotaoAcao(),
-              const SizedBox(height: 24),
-            ],
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20), // Reduzido de 24 para 20
+            child: Column(
+              children: [
+                _buildProgresso(),
+                const SizedBox(height: 16), // Reduzido de 24 para 16
+                _buildPergunta(),
+                const SizedBox(height: 16), // Reduzido de 24 para 16
+                Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: _buildAlternativas(),
+                      ),
+                      const SizedBox(height: 16), // Espaçamento fixo antes do botão
+                      _buildBotaoAcao(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -165,36 +174,37 @@ class _TelaQuizState extends State<TelaQuiz> {
   }
 
   Widget _buildAlternativas() {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: perguntaAtual.alternativas.length,
-        itemBuilder: (context, index) {
-          final alternativa = perguntaAtual.alternativas[index];
-          final selecionada = _alternativaSelecionada == index;
-          final correta = index == perguntaAtual.indiceAlternativaCorreta;
-          
-          Color? corCard;
-          if (_respondeu) {
-            if (correta) {
-              corCard = Colors.green.withOpacity(0.7);
-            } else if (selecionada && !correta) {
-              corCard = Colors.red.withOpacity(0.7);
-            } else {
-              corCard = Colors.white.withOpacity(0.9);
-            }
+    return Column(
+      children: perguntaAtual.alternativas.asMap().entries.map((entry) {
+        final index = entry.key;
+        final alternativa = entry.value;
+        final selecionada = _alternativaSelecionada == index;
+        final correta = index == perguntaAtual.indiceAlternativaCorreta;
+        
+        Color? corCard;
+        if (_respondeu) {
+          if (correta) {
+            corCard = Colors.green.withOpacity(0.7);
+          } else if (selecionada && !correta) {
+            corCard = Colors.red.withOpacity(0.7);
           } else {
-            corCard = selecionada 
-                ? Colors.deepPurpleAccent.withOpacity(0.3)
-                : Colors.white.withOpacity(0.9);
+            corCard = Colors.white.withOpacity(0.9);
           }
+        } else {
+          corCard = selecionada 
+              ? Colors.deepPurpleAccent.withOpacity(0.3)
+              : Colors.white.withOpacity(0.9);
+        }
 
-          return Card(
-            margin: const EdgeInsets.only(bottom: 12),
+        return Container(
+          margin: const EdgeInsets.only(bottom: 8), // Reduzido de 12 para 8
+          child: Card(
             color: corCard,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), // Reduzido de 16 para 12
             child: ListTile(
-              contentPadding: const EdgeInsets.all(16),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Reduzido o padding vertical
               leading: CircleAvatar(
+                radius: 16, // Reduzido o tamanho do avatar
                 backgroundColor: _respondeu && correta 
                     ? Colors.green 
                     : _respondeu && selecionada && !correta
@@ -205,26 +215,29 @@ class _TelaQuizState extends State<TelaQuiz> {
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: 14, // Reduzido o tamanho da fonte
                   ),
                 ),
               ),
               title: Text(
                 alternativa.texto,
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 14, // Reduzido de 16 para 14
                   fontWeight: FontWeight.w500,
                 ),
+                maxLines: 2, // Limitado a 2 linhas
+                overflow: TextOverflow.ellipsis,
               ),
               trailing: _respondeu && correta 
-                  ? const Icon(Icons.check_circle, color: Colors.green, size: 28)
+                  ? const Icon(Icons.check_circle, color: Colors.green, size: 24) // Reduzido de 28 para 24
                   : _respondeu && selecionada && !correta
-                      ? const Icon(Icons.cancel, color: Colors.red, size: 28)
+                      ? const Icon(Icons.cancel, color: Colors.red, size: 24) // Reduzido de 28 para 24
                       : null,
               onTap: () => _selecionarAlternativa(index),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      }).toList(),
     );
   }
 
